@@ -1,24 +1,50 @@
-import React from "react";
+import React, { useState } from "react";
 
-//include images into your bundle
-import rigoImage from "../../img/rigo-baby.jpg";
 
 //create your first component
 const Home = () => {
+	const [valorTarea, setValorTarea] = useState("");
+	const [lista, setLista] = useState([]);
+	const [mouseHover, setMouseHover] = useState(null);
+
+	const agregarTarea = (e) => {
+		if (e.key === "Enter") {
+			//al hacer enter se agrega la tarea nueva a la lista
+			setLista(lista.concat([valorTarea]))
+			setValorTarea("")
+			setMouseHover(null)
+		}
+	};
+
+	const eliminarTarea = (index) => {
+		// filtra y crea una nueva lista que excluye la tarea con el mismo indice
+		const nuevaLista = lista.filter((_, i) => i !== index);
+		setLista(nuevaLista);
+	};
 	return (
-		<div className="text-center">
-			<h1 className="text-center mt-5">Hello Rigo!</h1>
-			<p>
-				<img src={rigoImage} />
-			</p>
-			<a href="#" className="btn btn-success">
-				If you see this green button... bootstrap is working...
-			</a>
-			<p>
-				Made by{" "}
-				<a href="http://www.4geeksacademy.com">4Geeks Academy</a>, with
-				love!
-			</p>
+		<div className="container mt-3 contenedor">
+			<h1>todos</h1>
+			<div>
+				<input type="text" className="input form-control" placeholder="What needs to be done?"
+					onKeyDown={agregarTarea} onChange={(e) => { setValorTarea(e.target.value) }} />
+				<ul className="lista">
+					{lista.map((tarea, index) => (
+						<li className="tarea" key={index} onMouseEnter={() => setMouseHover(index)}
+							onMouseLeave={() => setMouseHover(null)}>
+							{tarea}
+							{mouseHover === index && (
+								<span
+									style={{ cursor: "pointer" }}
+									onClick={() => eliminarTarea(index)}
+								>
+									&#10006; {/* Cruz */}
+								</span>
+							)}
+						</li>
+					))}
+				</ul>
+				<div>{lista.length} item left</div>
+			</div>
 		</div>
 	);
 };
