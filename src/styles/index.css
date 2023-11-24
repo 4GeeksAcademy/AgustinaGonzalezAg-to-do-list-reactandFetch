@@ -31,3 +31,8 @@
     padding: 10px;
     box-shadow: 5px 3px 15px 10px rgba(0, 0, 0, 0.2);
 }
+
+.centro{
+    display: flex;
+    justify-content: center;
+}
